@@ -213,9 +213,8 @@ model Tarefas {
   tfusuario     String
   tfurgencia    UrgenciasEnum
   tfdataentrega String
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @default(now())
 
   //Relações
   usuario    Usuarios     @relation(fields: [tfusuario], references: [uscodigo])
