@@ -1,8 +1,11 @@
+import { UsuarioType } from './UsuariosType';
+
 export type VeiculosType = {
-  vecodigo: string;
+  vecodigo?: string;
   veplaca: string;
   veusuario: string;
   venome: string;
-  createdAt: string;
-  updatedAt: string;
+  createdAt?: string;
+  updatedAt?: string;
+  usuario?: UsuarioType;
 };

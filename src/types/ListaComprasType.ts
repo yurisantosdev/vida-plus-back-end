@@ -1,8 +1,11 @@
+import { UsuarioType } from './UsuariosType';
+
 export type ListaComprasType = {
-  lccodigo: string;
+  lccodigo?: string;
   lctitulo: string;
   lcusuario: string;
   lcfinalizada: boolean;
-  createdAt: string;
-  updatedAt: string;
+  createdAt?: string;
+  updatedAt?: string;
+  usuario?: UsuarioType;
 };
