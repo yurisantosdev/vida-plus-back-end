@@ -2,7 +2,7 @@ import { UsuarioType } from './UsuariosType';
 
 export type CodigosRecuperarSenhaType = {
   crscodigo?: string;
-  crstoken: number;
+  crstoken: string;
   crsusuario: string;
   createdAt?: string;
   updatedAt?: string;
