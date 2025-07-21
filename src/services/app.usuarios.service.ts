@@ -5,7 +5,6 @@ import { PrismaService } from '../prisma.service';
 import { randomUUID } from 'crypto';
 import { UsuarioType } from 'src/types/UsuariosType';
 import * as bcrypt from 'bcrypt';
-import { TarefasType } from 'src/types/TarefasType';
 
 const saltOrRounds = 10;
 
