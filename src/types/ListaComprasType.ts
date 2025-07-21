@@ -1,3 +1,4 @@
+import { ItensListaComprasType } from './ItensListaComprasType';
 import { UsuarioType } from './UsuariosType';
 
 export type ListaComprasType = {
@@ -8,4 +9,5 @@ export type ListaComprasType = {
   createdAt?: string;
   updatedAt?: string;
   usuario?: UsuarioType;
+  itensListaCompras: Array<ItensListaComprasType>;
 };
