@@ -1,0 +1,244 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Usuarios {
+  uscodigo              String                  @id
+  usnome                String
+  usemail               String                  @unique
+  usfoto                String
+  ussenha               String
+  createdAt             DateTime                @default(now())
+  updatedAt             DateTime                @default(now())
+  CodigosRecuperarSenha CodigosRecuperarSenha[]
+  Contas                Contas[]
+  CategoriasTransacoes  CategoriasTransacoes[]
+  Veiculos              Veiculos[]
+  CategoriasDespesas    CategoriasDespesas[]
+  ListaCompras          ListaCompras[]
+  Tarefas               Tarefas[]
+
+  @@map("usuarios")
+}
+
+model CodigosRecuperarSenha {
+  crscodigo  String   @id
+  crstoken   Int
+  crsusuario String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @default(now())
+
+  //Relações
+  usuario Usuarios @relation(fields: [crsusuario], references: [uscodigo])
+
+  @@map("codigosRecuperarSenha")
+}
+
+enum UrgenciasEnum {
+  URGENTE
+  NORMAL
+  MEDIA
+}
+
+//############################ Módulo Finance ############################//
+enum TiposContasEnum {
+  CORRENTE
+  POUPANCA
+  SALARIO
+}
+
+model Contas {
+  cocodigo    String          @id
+  coconta     String
+  cousuario   String
+  cobanco     String
+  cotipoconta TiposContasEnum
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @default(now())
+
+  //Relações
+  usuario    Usuarios     @relation(fields: [cousuario], references: [uscodigo])
+  Transacoes Transacoes[]
+
+  @@map("contas")
+}
+
+model CategoriasTransacoes {
+  ctcodigo    String   @id
+  ctcategoria String
+  ctusuario   String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now())
+
+  //Relações
+  usuario    Usuarios     @relation(fields: [ctusuario], references: [uscodigo])
+  Transacoes Transacoes[]
+
+  @@map("categoriasTransacoes")
+}
+
+model Transacoes {
+  tscodigo    String   @id
+  tstitulo    String
+  tsdescricao String
+  tsconta     String
+  tsvalor     Float
+  tsdespesa   Boolean  @default(false)
+  tsquando    String
+  tscategoria String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now())
+
+  //Relações
+  conta     Contas               @relation(fields: [tsconta], references: [cocodigo])
+  categoria CategoriasTransacoes @relation(fields: [tscategoria], references: [ctcodigo])
+
+  @@map("transacoes")
+}
+
+//############################ Módulo Finance ############################//
+
+//############################ Módulo Garage ############################//
+model Veiculos {
+  vecodigo  String   @id
+  veplaca   String   @unique
+  veusuario String
+  venome    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  //Relações
+  usuario        Usuarios         @relation(fields: [veusuario], references: [uscodigo])
+  Abastecimentos Abastecimentos[]
+  Despesas       Despesas[]
+
+  @@map("veiculos")
+}
+
+model Abastecimentos {
+  abcodigo     String   @id
+  abvalortotal Float
+  ablitros     Float
+  abvalorlitro Float
+  abveiculo    String
+  abquando     String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @default(now())
+
+  //Relações
+  veiculo Veiculos @relation(fields: [abveiculo], references: [vecodigo])
+
+  @@map("abastecimentos")
+}
+
+model CategoriasDespesas {
+  cdvcodigo    String   @id
+  ctvcaetgoria String
+  ctvusuario   String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @default(now())
+
+  //Relações
+  usuario  Usuarios   @relation(fields: [ctvusuario], references: [uscodigo])
+  Despesas Despesas[]
+
+  @@map("categoriasDespesas")
+}
+
+model Despesas {
+  dpcodigo    String   @id
+  dpvalor     Float
+  dpdescricao String
+  dpcategoria String
+  dpveiculo   String
+  dpquando    String
+  dpkm        Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now())
+
+  //Relações
+  veiculo   Veiculos           @relation(fields: [dpveiculo], references: [vecodigo])
+  categoria CategoriasDespesas @relation(fields: [dpcategoria], references: [cdvcodigo])
+
+  @@map("despesas")
+}
+
+//############################ Módulo Garage ############################//
+
+//############################ Módulo Mercado ############################//
+model ListaCompras {
+  lccodigo     String   @id
+  lctitulo     String
+  lcusuario    String
+  lcfinalizada Boolean  @default(false)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @default(now())
+
+  //Relações
+  usuario           Usuarios            @relation(fields: [lcusuario], references: [uscodigo])
+  ItensListaCompras ItensListaCompras[]
+
+  @@map("listaCompras")
+}
+
+model ItensListaCompras {
+  itcodigo     String   @id
+  ittitulo     String
+  itlista      String
+  itquantidade Int
+  itcomprado   Boolean  @default(false)
+  itvalor      Float
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @default(now())
+
+  //Relações
+  listaCompra ListaCompras @relation(fields: [itlista], references: [lccodigo])
+
+  @@map("itensListaCompras")
+}
+
+//############################ Módulo Mercado ############################//
+
+//############################ Módulo Tarefas ############################//
+model Tarefas {
+  tfcodigo      String        @id
+  tftitulo      String
+  tfdescricao   String
+  tffeito       Boolean       @default(false)
+  tfusuario     String
+  tfurgencia    UrgenciasEnum
+  tfdataentrega String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  //Relações
+  usuario    Usuarios     @relation(fields: [tfusuario], references: [uscodigo])
+  Subtarefas Subtarefas[]
+
+  @@map("tarefas")
+}
+
+model Subtarefas {
+  stcodigo      String        @id
+  sttarefa      String
+  sttitulo      String
+  stdescricao   String
+  sturgencia    UrgenciasEnum
+  stdateentrega String
+  stfeito       Boolean       @default(false)
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @default(now())
+
+  //Relações
+  tarefa Tarefas @relation(fields: [sttarefa], references: [tfcodigo])
+
+  @@map("subTarefas")
+}
+
+//############################ Módulo Tarefas ############################//
