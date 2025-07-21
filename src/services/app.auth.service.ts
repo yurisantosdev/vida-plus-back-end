@@ -4,7 +4,6 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { PrismaService } from '../prisma.service';
 import * as bcrypt from 'bcrypt';
-import { buscarLatitudeLongitude } from 'src/helpers/BuscaEndereco';
 
 @Injectable()
 export class AuthService {
@@ -28,12 +27,6 @@ export class AuthService {
         where: {
           usemail: email,
         },
-        select: {
-          uscodigo: true,
-          usemail: true,
-          usnome: true,
-          createdAt: true,
-        },
       });
 
       const isMatchPassword = await bcrypt.compare(senha, userPasswordPerfil.ussenha);
@@ -48,11 +41,9 @@ export class AuthService {
         );
       } else if (user && isMatchPassword) {
         const payload = { acess: email, sub: senha };
-        const localizacaoCasaUsuario = await buscarLatitudeLongitude(user);
 
         const newDataUser = {
           ...user,
-          localizacaoCasaUsuario
         };
 
         return {
