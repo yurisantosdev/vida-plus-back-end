@@ -17,7 +17,7 @@ export class UsuarioService {
     try {
       await this.prisma.$transaction(async (prisma) => {
         const senhaCrypt = await bcrypt.hash(usuario.ussenha, saltOrRounds);
-        console.log(senhaCrypt)
+
         await prisma.usuarios.create(
           {
             data: {
