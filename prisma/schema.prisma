@@ -170,7 +170,7 @@ model Despesas {
 
 //############################ Módulo Garage ############################//
 
-//############################ Módulo Mercado ############################//
+//############################ Módulo Shop ############################//
 model ListaCompras {
   lccodigo     String   @id
   lctitulo     String
@@ -202,7 +202,7 @@ model ItensListaCompras {
   @@map("itensListaCompras")
 }
 
-//############################ Módulo Mercado ############################//
+//############################ Módulo Shop ############################//
 
 //############################ Módulo Tarefas ############################//
 model Tarefas {
