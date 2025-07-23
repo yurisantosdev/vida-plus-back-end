@@ -20,7 +20,7 @@ model Usuarios {
   CategoriasTransacoes  CategoriasTransacoes[]
   Veiculos              Veiculos[]
   CategoriasDespesas    CategoriasDespesas[]
-  ListaCompras          ListaCompras[]
+  Checklists            Checklists[]
   Tarefas               Tarefas[]
 
   @@map("usuarios")
@@ -170,39 +170,38 @@ model Despesas {
 
 //############################ Módulo Garage ############################//
 
-//############################ Módulo Shop ############################//
-model ListaCompras {
-  lccodigo     String   @id
-  lctitulo     String
-  lcusuario    String
-  lcfinalizada Boolean  @default(false)
+//############################ Módulo Checklists ############################//
+model Checklists {
+  ckcodigo     String   @id
+  cktitulo     String
+  ckusuario    String
+  ckfinalizado Boolean  @default(false)
   createdAt    DateTime @default(now())
   updatedAt    DateTime @default(now())
 
   //Relações
-  usuario           Usuarios            @relation(fields: [lcusuario], references: [uscodigo])
-  ItensListaCompras ItensListaCompras[]
+  usuario         Usuarios          @relation(fields: [ckusuario], references: [uscodigo])
+  itensChecklists ItensChecklists[]
 
-  @@map("listaCompras")
+  @@map("checklists")
 }
 
-model ItensListaCompras {
-  itcodigo     String   @id
-  ittitulo     String
-  itlista      String
-  itquantidade Int
-  itcomprado   Boolean  @default(false)
-  itvalor      Float
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @default(now())
+model ItensChecklists {
+  iccodigo    String   @id
+  ictitulo    String
+  icdescricao String
+  iccheck     Boolean  @default(false)
+  icchecklist String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now())
 
   //Relações
-  listaCompra ListaCompras @relation(fields: [itlista], references: [lccodigo])
+  checklist Checklists @relation(fields: [icchecklist], references: [ckcodigo])
 
-  @@map("itensListaCompras")
+  @@map("itensChecklists")
 }
 
-//############################ Módulo Shop ############################//
+//############################ Módulo Checklists ############################//
 
 //############################ Módulo Tarefas ############################//
 model Tarefas {
