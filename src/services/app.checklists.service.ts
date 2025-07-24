@@ -47,7 +47,6 @@ export class ChecklistsService {
       const { usuario, itensChecklists, ...dataToSave } = checklist;
 
       await this.prisma.$transaction(async (prisma) => {
-        console.log(itensChecklists)
         await prisma.checklists.update({
           where: {
             ckcodigo: checklist.ckcodigo,
@@ -112,7 +111,6 @@ export class ChecklistsService {
 
       return { status: true, message: 'Checklist atualizado com sucesso!' };
     } catch (error) {
-      console.log(error);
       const errorMessage =
         error instanceof HttpException
           ? error.getResponse()
