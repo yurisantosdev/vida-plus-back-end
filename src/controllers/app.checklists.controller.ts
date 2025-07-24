@@ -49,4 +49,10 @@ export class ChecklistsController {
   async findAll(@Param('uscodigo') uscodigo: string) {
     return this.service.findAll(uscodigo);
   }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Get('checklists/find/finalizados/:uscodigo')
+  async findFinalizados(@Param('uscodigo') uscodigo: string) {
+    return this.service.findFinalizados(uscodigo);
+  }
 }

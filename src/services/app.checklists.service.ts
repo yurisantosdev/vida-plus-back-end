@@ -47,6 +47,7 @@ export class ChecklistsService {
       const { usuario, itensChecklists, ...dataToSave } = checklist;
 
       await this.prisma.$transaction(async (prisma) => {
+        console.log(itensChecklists)
         await prisma.checklists.update({
           where: {
             ckcodigo: checklist.ckcodigo,
@@ -181,11 +182,55 @@ export class ChecklistsService {
   async findAll(uscodigo: string) {
     try {
       let checklists;
+      let finalizados;
+      let pendentes;
+
+      await this.prisma.$transaction(async (prisma) => {
+        pendentes = await prisma.checklists.count({
+          where: {
+            ckusuario: uscodigo,
+            ckfinalizado: false,
+          },
+        });
+
+        finalizados = await prisma.checklists.count({
+          where: {
+            ckusuario: uscodigo,
+            ckfinalizado: true,
+          },
+        });
+
+        checklists = await prisma.checklists.findMany({
+          where: {
+            ckusuario: uscodigo,
+            ckfinalizado: false,
+          },
+          include: {
+            itensChecklists: true,
+          },
+        });
+      });
+
+      return { status: true, message: 'Checklists consultados com sucesso!', checklists, finalizados, pendentes };
+    } catch (error) {
+      const errorMessage =
+        error instanceof HttpException
+          ? error.getResponse()
+          : 'Não foi possível consultar os checklists, por favor tente novamente!';
+
+      throw new HttpException({ status: false, error: errorMessage }, HttpStatus.FORBIDDEN);
+    }
+  }
+
+  async findFinalizados(uscodigo: string) {
+    try {
+      let checklists;
 
       await this.prisma.$transaction(async (prisma) => {
         checklists = await prisma.checklists.findMany({
           where: {
             ckusuario: uscodigo,
+            ckfinalizado: true,
           },
           include: {
             itensChecklists: true,
