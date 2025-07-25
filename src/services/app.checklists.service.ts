@@ -206,6 +206,9 @@ export class ChecklistsService {
           include: {
             itensChecklists: true,
           },
+          orderBy: {
+            createdAt: 'asc'
+          }
         });
       });
 
