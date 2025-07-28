@@ -33,15 +33,15 @@ export class ChecklistsController {
   }
 
   @UseGuards(AuthGuard('jwt'))
-  @Delete('checklists/delete/:lccodigo')
-  async delete(@Param('lccodigo') lccodigo: string) {
-    return this.service.delete(lccodigo);
+  @Delete('checklists/delete/:ckcodigo')
+  async delete(@Param('ckcodigo') ckcodigo: string) {
+    return this.service.delete(ckcodigo);
   }
 
   @UseGuards(AuthGuard('jwt'))
-  @Get('checklists/find/:lccodigo')
-  async find(@Param('lccodigo') lccodigo: string) {
-    return this.service.find(lccodigo);
+  @Get('checklists/find/:ckcodigo')
+  async find(@Param('ckcodigo') ckcodigo: string) {
+    return this.service.find(ckcodigo);
   }
 
   @UseGuards(AuthGuard('jwt'))
