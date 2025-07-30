@@ -55,4 +55,10 @@ export class AbastecimentosController {
   async findAllVeiculo(@Param('vecodigo') vecodigo: string) {
     return this.service.findAllVeiculo(vecodigo);
   }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Get('abastecimentos/find/total/gasto/:uscodigo')
+  async findTotal(@Param('uscodigo') uscodigo: string) {
+    return this.service.findTotalGasto(uscodigo);
+  }
 }
