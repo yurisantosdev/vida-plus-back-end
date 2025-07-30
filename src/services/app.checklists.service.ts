@@ -134,7 +134,7 @@ export class ChecklistsService {
         await prisma.checklists.delete(
           {
             where: {
-              ckcodigo: ckcodigo,
+              ckcodigo,
             },
           }
         );
@@ -158,7 +158,7 @@ export class ChecklistsService {
       await this.prisma.$transaction(async (prisma) => {
         checklist = await prisma.checklists.findFirst({
           where: {
-            ckcodigo: ckcodigo,
+            ckcodigo,
           },
           include: {
             itensChecklists: true,
@@ -171,7 +171,7 @@ export class ChecklistsService {
       const errorMessage =
         error instanceof HttpException
           ? error.getResponse()
-          : 'Não foi possível consultar os checklists, por favor tente novamente!';
+          : 'Não foi possível consultar o checklist, por favor tente novamente!';
 
       throw new HttpException({ status: false, error: errorMessage }, HttpStatus.FORBIDDEN);
     }

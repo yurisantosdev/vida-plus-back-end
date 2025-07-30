@@ -104,13 +104,13 @@ model Transacoes {
 
 //############################ Módulo Garage ############################//
 model Veiculos {
-  vecodigo        String   @id
-  veplaca         String   @unique
-  veusuario       String
-  vequilometragem Float
-  venome          String
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @default(now())
+  vecodigo    String   @id
+  veplaca     String   @unique
+  veusuario   String
+  vehodometro Int
+  venome      String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now())
 
   //Relações
   usuario        Usuarios         @relation(fields: [veusuario], references: [uscodigo])
@@ -127,6 +127,7 @@ model Abastecimentos {
   ablitros     Float
   abvalorlitro Float
   abveiculo    String
+  abhodometro  Float
   abquando     String
   createdAt    DateTime @default(now())
   updatedAt    DateTime @default(now())
