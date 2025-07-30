@@ -6,7 +6,9 @@ export type AbastecimentosType = {
   ablitros: number;
   abvalorlitro: number;
   abveiculo: string;
+  abhodometro: number;
   abquando: string;
+  abusuario: string;
   createdAt?: string;
   updatedAt?: string;
   veiculo?: VeiculosType;

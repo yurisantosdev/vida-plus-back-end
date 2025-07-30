@@ -7,6 +7,7 @@ import { AuthController } from './controllers/app.auth.controller';
 import { UsuariosController } from './controllers/app.usuarios.controller';
 import { ChecklistsController } from './controllers/app.checklists.controller';
 import { VeiculosController } from './controllers/app.veiculos.controller';
+import { AbastecimentosController } from './controllers/app.abastecimentos.controller';
 
 //Services
 import { PrismaService } from './prisma.service';
@@ -15,6 +16,7 @@ import { JwtStrategy } from './helpers/JWTStrategy';
 import { UsuarioService } from './services/app.usuarios.service';
 import { ChecklistsService } from './services/app.checklists.service';
 import { VeiculosService } from './services/app.veiculos.service';
+import { AbastecimentosService } from './services/app.abastecimentos.service';
 
 @Module({
   imports: [
@@ -27,6 +29,7 @@ import { VeiculosService } from './services/app.veiculos.service';
     UsuariosController,
     ChecklistsController,
     VeiculosController,
+    AbastecimentosController,
   ],
   providers: [
     PrismaService,
@@ -35,6 +38,7 @@ import { VeiculosService } from './services/app.veiculos.service';
     UsuarioService,
     ChecklistsService,
     VeiculosService,
+    AbastecimentosService,
   ],
 })
 export class AppModule implements NestModule {

@@ -21,6 +21,7 @@ model Usuarios {
   Veiculos              Veiculos[]
   Checklists            Checklists[]
   Tarefas               Tarefas[]
+  Abastecimentos        Abastecimentos[]
 
   @@map("usuarios")
 }
@@ -127,13 +128,15 @@ model Abastecimentos {
   ablitros     Float
   abvalorlitro Float
   abveiculo    String
-  abhodometro  Float
+  abusuario    String
+  abhodometro  Int
   abquando     String
   createdAt    DateTime @default(now())
   updatedAt    DateTime @default(now())
 
   //Relações
   veiculo Veiculos @relation(fields: [abveiculo], references: [vecodigo])
+  usuario Usuarios @relation(fields: [abusuario], references: [uscodigo])
 
   @@map("abastecimentos")
 }
