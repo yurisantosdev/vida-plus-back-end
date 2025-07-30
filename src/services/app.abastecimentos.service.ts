@@ -174,31 +174,32 @@ export class AbastecimentosService {
         const resultado = await prisma.abastecimentos.findMany({
           where: {
             abusuario: uscodigo,
-            createdAt: {
-              gte: new Date(`${anoAtual}-01-01T00:00:00.000Z`),
-              lte: new Date(`${anoAtual}-12-31T23:59:59.999Z`)
+            abquando: {
+              gte: `${anoAtual}-01-01`,
+              lte: `${anoAtual}-12-31`,
             },
           },
           select: {
-            createdAt: true,
+            abquando: true,
             abvalortotal: true,
           },
           orderBy: {
-            createdAt: 'asc',
+            abquando: 'asc',
           },
         });
 
         const agrupado: Record<string, number> = {};
         for (const reg of resultado) {
-          const data = new Date(reg.createdAt);
-          const key = `${data.getFullYear()}-${String(data.getMonth() + 1).padStart(2, '0')}`;
+          const [ano, mes] = reg.abquando.split('-');
+          const key = `${ano}-${mes}`;
           agrupado[key] = (agrupado[key] || 0) + Number(reg.abvalortotal);
         }
 
         for (let mes = 0; mes < 12; mes++) {
-          const key = `${anoAtual}-${String(mes + 1).padStart(2, '0')}`;
+          const mesStr = String(mes + 1).padStart(2, '0');
+          const key = `${anoAtual}-${mesStr}`;
           valores.push({
-            name: `${meses[mes]} (${String(anoAtual).slice(2)})`,
+            name: `${meses[mes]}`,
             value: parseFloat((agrupado[key] || 0).toFixed(2)),
           });
         }
@@ -222,4 +223,5 @@ export class AbastecimentosService {
       throw new HttpException({ status: false, error: errorMessage }, HttpStatus.FORBIDDEN);
     }
   }
+
 }
