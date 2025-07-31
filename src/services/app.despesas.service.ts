@@ -88,17 +88,17 @@ export class DespesasService {
 
   async find(dpcodigo: string) {
     try {
-      let despesas;
+      let despesa;
 
       await this.prisma.$transaction(async (prisma) => {
-        despesas = await prisma.despesas.findFirst({
+        despesa = await prisma.despesas.findFirst({
           where: {
             dpcodigo,
           },
         });
       });
 
-      return { status: true, message: 'Despesa consultada com sucesso!', despesas };
+      return { status: true, message: 'Despesa consultada com sucesso!', despesa };
     } catch (error) {
       const errorMessage =
         error instanceof HttpException
