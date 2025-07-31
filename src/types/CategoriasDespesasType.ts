@@ -8,3 +8,10 @@ export type CategoriasDespesasType = {
   updatedAt?: string;
   usuario?: UsuarioType;
 };
+
+export type CategoriasDespesasEnum =
+  | 'ESTACIONAMENTO'
+  | 'MULTA'
+  | 'LAVAGEM'
+  | 'SEGURO'
+  | 'OUTRO';

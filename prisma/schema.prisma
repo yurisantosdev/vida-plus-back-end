@@ -23,6 +23,7 @@ model Usuarios {
   Tarefas               Tarefas[]
   Abastecimentos        Abastecimentos[]
   Manutencoes           Manutencoes[]
+  Despesas              Despesas[]
 
   @@map("usuarios")
 }
@@ -157,12 +158,14 @@ model Despesas {
   dpcategoria CategoriasDespesasEnum
   dpveiculo   String
   dpquando    String
-  dpkm        Int
+  dphodometro Int
+  dpusuario   String
   createdAt   DateTime               @default(now())
   updatedAt   DateTime               @default(now())
 
   //Relações
   veiculo Veiculos @relation(fields: [dpveiculo], references: [vecodigo])
+  usuario Usuarios @relation(fields: [dpusuario], references: [uscodigo])
 
   @@map("despesas")
 }
@@ -174,6 +177,7 @@ model Manutencoes {
   mtvalor     Float
   mtdescricao String
   mttitle     String
+  mthodometro String
   mtusuario   String
   createdAt   DateTime @default(now())
   updatedAt   DateTime @default(now())
