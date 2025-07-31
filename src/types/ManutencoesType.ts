@@ -9,7 +9,7 @@ export type ManutencoesType = {
   mtvalor: number;
   mtquando: string;
   mtusuario: string;
-  mthodometro: string;
+  mthodometro: number;
   createdAt?: string;
   updatedAt?: string;
   veiculo?: VeiculosType;

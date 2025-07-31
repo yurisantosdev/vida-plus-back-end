@@ -114,6 +114,9 @@ export class VeiculosService {
           where: {
             vecodigo,
           },
+          include: {
+            usuario: true,
+          },
         });
       });
 
@@ -139,7 +142,10 @@ export class VeiculosService {
           },
           orderBy: {
             createdAt: 'asc'
-          }
+          },
+          include: {
+            usuario: true,
+          },
         });
       });
 

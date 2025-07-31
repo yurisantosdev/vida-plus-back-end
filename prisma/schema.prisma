@@ -177,7 +177,7 @@ model Manutencoes {
   mtvalor     Float
   mtdescricao String
   mttitle     String
-  mthodometro String
+  mthodometro Int
   mtusuario   String
   createdAt   DateTime @default(now())
   updatedAt   DateTime @default(now())
