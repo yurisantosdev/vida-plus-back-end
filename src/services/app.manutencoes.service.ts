@@ -3,48 +3,48 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma.service';
 import { randomUUID } from 'crypto';
-import { AbastecimentosType } from 'src/types/AbastecimentosType';
+import { ManutencoesType } from 'src/types/ManutencoesType';
 
 @Injectable()
-export class AbastecimentosService {
+export class ManutencoesService {
   // eslint-disable-next-line prettier/prettier
   constructor(readonly prisma: PrismaService) { }
 
-  async create(abastecimento: AbastecimentosType) {
+  async create(manutencao: ManutencoesType) {
     try {
-      const { veiculo, ...dataToSave } = abastecimento;
+      const { veiculo, usuario, ...dataToSave } = manutencao;
 
       await this.prisma.$transaction(async (prisma) => {
-        await prisma.abastecimentos.create(
+        await prisma.manutencoes.create(
           {
             data: {
               ...dataToSave,
-              abcodigo: randomUUID(),
+              mtcodigo: randomUUID(),
             },
           }
         );
       });
 
-      return { status: true, message: 'Abastecimento cadastrado com sucesso!' };
+      return { status: true, message: 'Manutenção cadastrada com sucesso!' };
     } catch (error) {
       const errorMessage =
         error instanceof HttpException
           ? error.getResponse()
-          : 'Não foi possível criar o abastecimento, por favor tente novamente!';
+          : 'Não foi possível criar a manutenção, por favor tente novamente!';
 
       throw new HttpException({ status: false, error: errorMessage }, HttpStatus.FORBIDDEN);
     }
   }
 
-  async update(abastecimento: AbastecimentosType) {
+  async update(manutencao: ManutencoesType) {
     try {
-      const { veiculo, ...dataToSave } = abastecimento;
+      const { veiculo, usuario, ...dataToSave } = manutencao;
 
       await this.prisma.$transaction(async (prisma) => {
-        await prisma.abastecimentos.update(
+        await prisma.manutencoes.update(
           {
             where: {
-              abcodigo: abastecimento.abcodigo,
+              mtcodigo: manutencao.mtcodigo,
             },
             data: {
               ...dataToSave,
@@ -53,56 +53,56 @@ export class AbastecimentosService {
         );
       });
 
-      return { status: true, message: 'Abastecimento atulizado com sucesso!' };
+      return { status: true, message: 'Manutenção atualizada com sucesso!' };
     } catch (error) {
       const errorMessage =
         error instanceof HttpException
           ? error.getResponse()
-          : 'Não foi possível atualizar o abastecimento, por favor tente novamente!';
+          : 'Não foi possível atualizar a manutenção, por favor tente novamente!';
 
       throw new HttpException({ status: false, error: errorMessage }, HttpStatus.FORBIDDEN);
     }
   }
 
-  async delete(abcodigo: string) {
+  async delete(mtcodigo: string) {
     try {
       await this.prisma.$transaction(async (prisma) => {
-        await prisma.abastecimentos.deleteMany({
+        await prisma.manutencoes.deleteMany({
           where: {
-            abcodigo,
+            mtcodigo,
           },
         });
       });
 
-      return { status: true, message: 'Abastecimento deletado com sucesso!' };
+      return { status: true, message: 'Manutenção deletada com sucesso!' };
     } catch (error) {
       const errorMessage =
         error instanceof HttpException
           ? error.getResponse()
-          : 'Não foi possível deletar o abastecimento, por favor tente novamente!';
+          : 'Não foi possível deletar a manutenção, por favor tente novamente!';
 
       throw new HttpException({ status: false, error: errorMessage }, HttpStatus.FORBIDDEN);
     }
   }
 
-  async find(abcodigo: string) {
+  async find(mtcodigo: string) {
     try {
-      let abastecimento;
+      let manutencao;
 
       await this.prisma.$transaction(async (prisma) => {
-        abastecimento = await prisma.abastecimentos.findFirst({
+        manutencao = await prisma.manutencoes.findFirst({
           where: {
-            abcodigo,
+            mtcodigo,
           },
         });
       });
 
-      return { status: true, message: 'Abastecimento consultado com sucesso!', abastecimento };
+      return { status: true, message: 'Manutenção consultada com sucesso!', manutencao };
     } catch (error) {
       const errorMessage =
         error instanceof HttpException
           ? error.getResponse()
-          : 'Não foi possível consultar o abastecimento, por favor tente novamente!';
+          : 'Não foi possível consultar a manutenção, por favor tente novamente!';
 
       throw new HttpException({ status: false, error: errorMessage }, HttpStatus.FORBIDDEN);
     }
@@ -110,12 +110,12 @@ export class AbastecimentosService {
 
   async findAll(uscodigo: string) {
     try {
-      let abastecimentos;
+      let manutencoes;
 
       await this.prisma.$transaction(async (prisma) => {
-        abastecimentos = await prisma.abastecimentos.findMany({
+        manutencoes = await prisma.manutencoes.findMany({
           where: {
-            abusuario: uscodigo,
+            mtusuario: uscodigo,
           },
           orderBy: {
             createdAt: 'asc'
@@ -123,12 +123,12 @@ export class AbastecimentosService {
         });
       });
 
-      return { status: true, message: 'Abastecimentos consultados com sucesso!', abastecimentos };
+      return { status: true, message: 'Manutenções consultadas com sucesso!', manutencoes };
     } catch (error) {
       const errorMessage =
         error instanceof HttpException
           ? error.getResponse()
-          : 'Não foi possível consultar os abastecimentos, por favor tente novamente!';
+          : 'Não foi possível consultar as manutenções, por favor tente novamente!';
 
       throw new HttpException({ status: false, error: errorMessage }, HttpStatus.FORBIDDEN);
     }
@@ -136,12 +136,12 @@ export class AbastecimentosService {
 
   async findAllVeiculo(vecodigo: string) {
     try {
-      let abastecimentos;
+      let manutencoes;
 
       await this.prisma.$transaction(async (prisma) => {
-        abastecimentos = await prisma.abastecimentos.findMany({
+        manutencoes = await prisma.manutencoes.findMany({
           where: {
-            abveiculo: vecodigo,
+            mtveiculo: vecodigo,
           },
           orderBy: {
             createdAt: 'asc'
@@ -149,12 +149,12 @@ export class AbastecimentosService {
         });
       });
 
-      return { status: true, message: 'Abastecimentos consultados com sucesso!', abastecimentos };
+      return { status: true, message: 'Manutenções consultadas com sucesso!', manutencoes };
     } catch (error) {
       const errorMessage =
         error instanceof HttpException
           ? error.getResponse()
-          : 'Não foi possível consultar os abastecimentos, por favor tente novamente!';
+          : 'Não foi possível consultar as manutenções, por favor tente novamente!';
 
       throw new HttpException({ status: false, error: errorMessage }, HttpStatus.FORBIDDEN);
     }
@@ -171,28 +171,28 @@ export class AbastecimentosService {
       const valores: { name: string; value: number }[] = [];
 
       await this.prisma.$transaction(async (prisma) => {
-        const resultado = await prisma.abastecimentos.findMany({
+        const resultado = await prisma.manutencoes.findMany({
           where: {
-            abusuario: uscodigo,
-            abquando: {
+            mtusuario: uscodigo,
+            mtquando: {
               gte: `${anoAtual}-01-01`,
               lte: `${anoAtual}-12-31`,
             },
           },
           select: {
-            abquando: true,
-            abvalortotal: true,
+            mtquando: true,
+            mtvalor: true,
           },
           orderBy: {
-            abquando: 'asc',
+            mtquando: 'asc',
           },
         });
 
         const agrupado: Record<string, number> = {};
         for (const reg of resultado) {
-          const [ano, mes] = reg.abquando.split('-');
+          const [ano, mes] = reg.mtquando.split('-');
           const key = `${ano}-${mes}`;
-          agrupado[key] = (agrupado[key] || 0) + Number(reg.abvalortotal);
+          agrupado[key] = (agrupado[key] || 0) + Number(reg.mtvalor);
         }
 
         for (let mes = 0; mes < 12; mes++) {

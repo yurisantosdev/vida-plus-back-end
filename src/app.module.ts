@@ -8,6 +8,7 @@ import { UsuariosController } from './controllers/app.usuarios.controller';
 import { ChecklistsController } from './controllers/app.checklists.controller';
 import { VeiculosController } from './controllers/app.veiculos.controller';
 import { AbastecimentosController } from './controllers/app.abastecimentos.controller';
+import { ManutenconsController } from './controllers/app.manutencoes.controller';
 
 //Services
 import { PrismaService } from './prisma.service';
@@ -17,6 +18,7 @@ import { UsuarioService } from './services/app.usuarios.service';
 import { ChecklistsService } from './services/app.checklists.service';
 import { VeiculosService } from './services/app.veiculos.service';
 import { AbastecimentosService } from './services/app.abastecimentos.service';
+import { ManutencoesService } from './services/app.manutencoes.service';
 
 @Module({
   imports: [
@@ -30,6 +32,7 @@ import { AbastecimentosService } from './services/app.abastecimentos.service';
     ChecklistsController,
     VeiculosController,
     AbastecimentosController,
+    ManutenconsController,
   ],
   providers: [
     PrismaService,
@@ -39,6 +42,7 @@ import { AbastecimentosService } from './services/app.abastecimentos.service';
     ChecklistsService,
     VeiculosService,
     AbastecimentosService,
+    ManutencoesService,
   ],
 })
 export class AppModule implements NestModule {

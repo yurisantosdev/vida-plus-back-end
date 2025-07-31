@@ -22,6 +22,7 @@ model Usuarios {
   Checklists            Checklists[]
   Tarefas               Tarefas[]
   Abastecimentos        Abastecimentos[]
+  Manutencoes           Manutencoes[]
 
   @@map("usuarios")
 }
@@ -173,11 +174,13 @@ model Manutencoes {
   mtvalor     Float
   mtdescricao String
   mttitle     String
+  mtusuario   String
   createdAt   DateTime @default(now())
   updatedAt   DateTime @default(now())
 
   //Relações
   veiculo Veiculos @relation(fields: [mtveiculo], references: [vecodigo])
+  usuario Usuarios @relation(fields: [mtusuario], references: [uscodigo])
 
   @@map("manutencoes")
 }
