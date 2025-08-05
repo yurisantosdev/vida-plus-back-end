@@ -15,13 +15,14 @@ export class UsuarioService {
 
   async create(usuario: UsuarioType) {
     try {
+      const { confirmarSenha, ussenha, ...dataToSave } = usuario;
       await this.prisma.$transaction(async (prisma) => {
         const senhaCrypt = await bcrypt.hash(usuario.ussenha, saltOrRounds);
 
         await prisma.usuarios.create(
           {
             data: {
-              ...usuario,
+              ...dataToSave,
               uscodigo: randomUUID(),
               ussenha: senhaCrypt,
             },

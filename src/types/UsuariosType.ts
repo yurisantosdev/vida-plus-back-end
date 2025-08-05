@@ -4,6 +4,7 @@ export type UsuarioType = {
   usemail: string;
   ussenha: string;
   usfoto: string;
+  confirmarSenha?: string;
   createdAt?: string;
   updatedAt?: string;
 };

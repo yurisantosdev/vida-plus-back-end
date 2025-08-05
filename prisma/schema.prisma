@@ -24,6 +24,7 @@ model Usuarios {
   Abastecimentos        Abastecimentos[]
   Manutencoes           Manutencoes[]
   Despesas              Despesas[]
+  Notificacoes          Notificacoes[]
 
   @@map("usuarios")
 }
@@ -45,6 +46,22 @@ enum UrgenciasEnum {
   URGENTE
   NORMAL
   MEDIA
+}
+
+model Notificacoes {
+  nscodigo    String   @id
+  nstitulo    String
+  nsdescricao String
+  nsusuario   String
+  nslink      String?
+  nslido      Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now())
+
+  //Relações
+  usuario Usuarios @relation(fields: [nsusuario], references: [uscodigo])
+
+  @@map("notificacoes")
 }
 
 //############################ Módulo Finance ############################//

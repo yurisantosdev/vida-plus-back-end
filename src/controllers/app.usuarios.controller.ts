@@ -17,7 +17,6 @@ export class UsuariosController {
   // eslint-disable-next-line prettier/prettier
   constructor(private service: UsuarioService) { }
 
-  // @UseGuards(AuthGuard('jwt'))
   @Post('usuarios/create')
   async create(@Request() @Body() Body: UsuarioType) {
     return this.service.create(Body);
