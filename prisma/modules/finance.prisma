@@ -1,0 +1,242 @@
+model InstituicoesFinanceiras {
+  ifcodigo   String   @id
+  ifnome     String
+  ifcnpj     String?  @unique
+  ifsite     String?
+  iftelefone String?
+  ifativo    Boolean  @default(true)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @default(now())
+
+  //Relações
+  contas Contas[]
+
+  @@map("instituicoesFinanceiras")
+}
+
+model Contas {
+  ctcodigo         String          @id
+  ctconta          String
+  ctusuario        String
+  ctinstituicao    String?
+  ctsaldo          Float           @default(0)
+  ctsaldoInicial   Float           @default(0)
+  cttipoconta      TiposContasEnum
+  ctstatus         StatusContaEnum @default(ATIVA)
+  ctlimiteCredito  Float?
+  ctdataVencimento DateTime?
+  ctobservacao     String?
+  ctcor            String? // Para personalização da UI
+  ctativo          Boolean         @default(true)
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime        @default(now())
+
+  //Relações
+  usuario               Usuarios                 @relation(fields: [ctusuario], references: [uscodigo])
+  instituicao           InstituicoesFinanceiras? @relation(fields: [ctinstituicao], references: [ifcodigo])
+  transacoes            Transacoes[]
+  transferenciasOrigem  Transferencias[]         @relation("TransferenciaOrigem")
+  transferenciasDestino Transferencias[]         @relation("TransferenciaDestino")
+  metas                 MetasFinanceiras[]
+
+  @@map("contas")
+}
+
+model CategoriasTransacoes {
+  ctcodigo    String   @id
+  ctcategoria String
+  ctusuario   String
+  ctcor       String?
+  ctativo     Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now())
+
+  //Relações
+  usuario       Usuarios                  @relation(fields: [ctusuario], references: [uscodigo])
+  transacoes    Transacoes[]
+  subcategorias SubcategoriasTransacoes[]
+
+  @@map("categoriasTransacoes")
+}
+
+model SubcategoriasTransacoes {
+  sctcodigo    String   @id
+  sctnome      String
+  sctcategoria String
+  sctusuario   String
+  sctativo     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @default(now())
+
+  //Relações
+  categoria  CategoriasTransacoes @relation(fields: [sctcategoria], references: [ctcodigo])
+  usuario    Usuarios             @relation(fields: [sctusuario], references: [uscodigo])
+  transacoes Transacoes[]
+
+  @@map("subcategoriasTransacoes")
+}
+
+model Transacoes {
+  tscodigo       String                     @id
+  tstitulo       String
+  tsdescricao    String?
+  tsconta        String
+  tsvalor        Float
+  tstipo         TiposTransacaoEnum
+  tsstatus       StatusTransacaoEnum        @default(CONFIRMADA)
+  tsquando       DateTime // Data da transação
+  tscategoria    String?
+  tssubcategoria String?
+  tsrecorrente   Boolean                    @default(false)
+  tsfrequencia   FrequenciaRecorrenciaEnum?
+  tsdataInicio   DateTime?
+  tsdataFim      DateTime?
+  tscomprovante  String? // URL do comprovante
+  tsnotas        String?
+  tsusuario      String
+  createdAt      DateTime                   @default(now())
+  updatedAt      DateTime                   @default(now())
+
+  //Relações
+  conta          Contas                   @relation(fields: [tsconta], references: [ctcodigo])
+  categoria      CategoriasTransacoes?    @relation(fields: [tscategoria], references: [ctcodigo])
+  subcategoria   SubcategoriasTransacoes? @relation(fields: [tssubcategoria], references: [sctcodigo])
+  usuario        Usuarios                 @relation(fields: [tsusuario], references: [uscodigo])
+  transferencias Transferencias[]
+  anexos         AnexosTransacao[]
+
+  @@map("transacoes")
+}
+
+model Transferencias {
+  trcodigo       String              @id
+  trcontaOrigem  String
+  trcontaDestino String
+  trvalor        Float
+  trdata         DateTime
+  trtaxa         Float?              @default(0)
+  trdescricao    String?
+  trstatus       StatusTransacaoEnum @default(CONFIRMADA)
+  trusuario      String
+  createdAt      DateTime            @default(now())
+  updatedAt      DateTime            @default(now())
+
+  //Relações
+  contaOrigem  Contas   @relation("TransferenciaOrigem", fields: [trcontaOrigem], references: [ctcodigo])
+  contaDestino Contas   @relation("TransferenciaDestino", fields: [trcontaDestino], references: [ctcodigo])
+  usuario      Usuarios @relation(fields: [trusuario], references: [uscodigo])
+
+  @@map("transferencias")
+}
+
+model Bens {
+  bncodigo        String        @id
+  bnnome          String
+  bntipo          TiposBensEnum
+  bnvalor         Float
+  bnusuario       String
+  bndescricao     String?
+  bndataAquisicao DateTime?
+  bnlocalizacao   String?
+  bnstatus        String? // "ATIVO", "VENDIDO", "PERDIDO", etc.
+  bnobservacao    String?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @default(now())
+
+  //Relações
+  usuario    Usuarios         @relation(fields: [bnusuario], references: [uscodigo])
+  avaliacoes AvaliacoesBens[]
+
+  @@map("bens")
+}
+
+model AvaliacoesBens {
+  abcodigo     String   @id
+  abben        String
+  abvalor      Float
+  abdata       DateTime
+  abobservacao String?
+  abusuario    String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @default(now())
+
+  //Relações
+  bem     Bens     @relation(fields: [abben], references: [bncodigo])
+  usuario Usuarios @relation(fields: [abusuario], references: [uscodigo])
+
+  @@map("avaliacoesBens")
+}
+
+model MetasFinanceiras {
+  mfcodigo     String   @id
+  mfnome       String
+  mfconta      String
+  mfvalorMeta  Float
+  mfvalorAtual Float    @default(0)
+  mfdataInicio DateTime
+  mfdataFim    DateTime
+  mfdescricao  String?
+  mfativo      Boolean  @default(true)
+  mfusuario    String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @default(now())
+
+  //Relações
+  conta   Contas   @relation(fields: [mfconta], references: [ctcodigo])
+  usuario Usuarios @relation(fields: [mfusuario], references: [uscodigo])
+
+  @@map("metasFinanceiras")
+}
+
+model AnexosTransacao {
+  atcodigo    String   @id
+  attransacao String
+  atnome      String
+  aturl       String
+  attipo      String // "COMPROVANTE", "NOTA_FISCAL", "RECIBO", etc.
+  atusuario   String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now())
+
+  //Relações
+  transacao Transacoes @relation(fields: [attransacao], references: [tscodigo])
+  usuario   Usuarios   @relation(fields: [atusuario], references: [uscodigo])
+
+  @@map("anexosTransacao")
+}
+
+model Orcamentos {
+  orcodigo    String   @id
+  ornome      String
+  orusuario   String
+  orvalor     Float
+  orperiodo   String // "MENSAL", "ANUAL", etc.
+  orano       Int
+  ormes       Int?
+  orativo     Boolean  @default(true)
+  ordescricao String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now())
+
+  //Relações
+  usuario        Usuarios         @relation(fields: [orusuario], references: [uscodigo])
+  itensOrcamento ItensOrcamento[]
+
+  @@map("orcamentos")
+}
+
+model ItensOrcamento {
+  iocodigo    String   @id
+  ioorcamento String
+  iocategoria String
+  iovalor     Float
+  iodescricao String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now())
+
+  //Relações
+  orcamento Orcamentos           @relation(fields: [ioorcamento], references: [orcodigo])
+  categoria CategoriasTransacoes @relation(fields: [iocategoria], references: [ctcodigo])
+
+  @@map("itensOrcamento")
+}

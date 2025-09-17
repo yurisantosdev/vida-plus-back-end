@@ -1,0 +1,74 @@
+model Veiculos {
+  vecodigo    String   @id
+  veplaca     String   @unique
+  veusuario   String
+  vehodometro Int
+  venome      String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now())
+
+  //Relações
+  usuario        Usuarios         @relation(fields: [veusuario], references: [uscodigo])
+  Abastecimentos Abastecimentos[]
+  Despesas       Despesas[]
+  Manutencoes    Manutencoes[]
+
+  @@map("veiculos")
+}
+
+model Abastecimentos {
+  abcodigo     String   @id
+  abvalortotal Float
+  ablitros     Float
+  abvalorlitro Float
+  abveiculo    String
+  abusuario    String
+  abhodometro  Int
+  abquando     String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @default(now())
+
+  //Relações
+  veiculo Veiculos @relation(fields: [abveiculo], references: [vecodigo])
+  usuario Usuarios @relation(fields: [abusuario], references: [uscodigo])
+
+  @@map("abastecimentos")
+}
+
+model Despesas {
+  dpcodigo    String                 @id
+  dpvalor     Float
+  dpdescricao String
+  dpcategoria CategoriasDespesasEnum
+  dpveiculo   String
+  dpquando    String
+  dphodometro Int
+  dpusuario   String
+  createdAt   DateTime               @default(now())
+  updatedAt   DateTime               @default(now())
+
+  //Relações
+  veiculo Veiculos @relation(fields: [dpveiculo], references: [vecodigo])
+  usuario Usuarios @relation(fields: [dpusuario], references: [uscodigo])
+
+  @@map("despesas")
+}
+
+model Manutencoes {
+  mtcodigo    String   @id
+  mtveiculo   String
+  mtquando    String
+  mtvalor     Float
+  mtdescricao String
+  mttitle     String
+  mthodometro Int
+  mtusuario   String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now())
+
+  //Relações
+  veiculo Veiculos @relation(fields: [mtveiculo], references: [vecodigo])
+  usuario Usuarios @relation(fields: [mtusuario], references: [uscodigo])
+
+  @@map("manutencoes")
+}

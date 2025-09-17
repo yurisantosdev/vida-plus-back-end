@@ -10,6 +10,9 @@ import { VeiculosController } from './controllers/app.veiculos.controller';
 import { AbastecimentosController } from './controllers/app.abastecimentos.controller';
 import { ManutenconsController } from './controllers/app.manutencoes.controller';
 import { DespesasController } from './controllers/app.despesas.controller';
+import { ContasController } from './controllers/app.contas.controller';
+import { TransacoesController } from './controllers/app.transacoes.controller';
+import { CategoriasTransacoesController } from './controllers/app.categorias-transacoes.controller';
 
 //Services
 import { PrismaService } from './prisma.service';
@@ -21,6 +24,9 @@ import { VeiculosService } from './services/app.veiculos.service';
 import { AbastecimentosService } from './services/app.abastecimentos.service';
 import { ManutencoesService } from './services/app.manutencoes.service';
 import { DespesasService } from './services/app.despesas.service';
+import { ContasService } from './services/app.contas.service';
+import { TransacoesService } from './services/app.transacoes.service';
+import { CategoriasTransacoesService } from './services/app.categorias-transacoes.service';
 
 @Module({
   imports: [
@@ -36,6 +42,9 @@ import { DespesasService } from './services/app.despesas.service';
     AbastecimentosController,
     ManutenconsController,
     DespesasController,
+    ContasController,
+    TransacoesController,
+    CategoriasTransacoesController,
   ],
   providers: [
     PrismaService,
@@ -47,6 +56,9 @@ import { DespesasService } from './services/app.despesas.service';
     AbastecimentosService,
     ManutencoesService,
     DespesasService,
+    ContasService,
+    TransacoesService,
+    CategoriasTransacoesService,
   ],
 })
 export class AppModule implements NestModule {

@@ -1,0 +1,68 @@
+model Usuarios {
+  uscodigo  String   @id
+  usnome    String
+  usemail   String   @unique
+  usfoto    String
+  ussenha   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  // Relações - Módulo Usuários
+  CodigosRecuperarSenha CodigosRecuperarSenha[]
+  Notificacoes          Notificacoes[]
+
+  // Relações - Módulo Finance
+  Contas                  Contas[]
+  CategoriasTransacoes    CategoriasTransacoes[]
+  SubcategoriasTransacoes SubcategoriasTransacoes[]
+  Transacoes              Transacoes[]
+  Transferencias          Transferencias[]
+  Bens                    Bens[]
+  AvaliacoesBens          AvaliacoesBens[]
+  MetasFinanceiras        MetasFinanceiras[]
+  AnexosTransacao         AnexosTransacao[]
+  Orcamentos              Orcamentos[]
+
+  // Relações - Módulo Garage
+  Veiculos       Veiculos[]
+  Abastecimentos Abastecimentos[]
+  Manutencoes    Manutencoes[]
+  Despesas       Despesas[]
+
+  // Relações - Módulo Checklists
+  Checklists Checklists[]
+
+  // Relações - Módulo Tarefas
+  Tarefas Tarefas[]
+
+  @@map("usuarios")
+}
+
+model CodigosRecuperarSenha {
+  crscodigo  String   @id
+  crstoken   String
+  crsusuario String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @default(now())
+
+  //Relações
+  usuario Usuarios @relation(fields: [crsusuario], references: [uscodigo])
+
+  @@map("codigosRecuperarSenha")
+}
+
+model Notificacoes {
+  nscodigo    String   @id
+  nstitulo    String
+  nsdescricao String
+  nsusuario   String
+  nslink      String?
+  nslido      Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now())
+
+  //Relações
+  usuario Usuarios @relation(fields: [nsusuario], references: [uscodigo])
+
+  @@map("notificacoes")
+}

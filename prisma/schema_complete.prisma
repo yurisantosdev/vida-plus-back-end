@@ -1,0 +1,155 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Este arquivo agora serve como ponto de entrada principal
+// Os módulos estão organizados em arquivos separados na pasta modules/
+
+// ========================================
+// MÓDULOS IMPORTADOS
+// ========================================
+
+// Enums do Sistema
+enum UrgenciasEnum {
+  URGENTE
+  NORMAL
+  MEDIA
+}
+
+enum TiposContasEnum {
+  CORRENTE
+  POUPANCA
+  SALARIO
+  INVESTIMENTO
+  CARTAO_CREDITO
+  CARTAO_DEBITO
+  DINHEIRO
+  OUTRO
+}
+
+enum CategoriasDespesasEnum {
+  ESTACIONAMENTO
+  MULTA
+  LAVAGEM
+  SEGURO
+  OUTRO
+}
+
+enum TiposTransacaoEnum {
+  RECEITA
+  DESPESA
+  TRANSFERENCIA
+  INVESTIMENTO
+  RETIRADA
+}
+
+enum StatusTransacaoEnum {
+  PENDENTE
+  CONFIRMADA
+  CANCELADA
+  ESTORNADA
+}
+
+enum FrequenciaRecorrenciaEnum {
+  UMA_VEZ
+  DIARIA
+  SEMANAL
+  QUINZENAL
+  MENSAL
+  BIMESTRAL
+  TRIMESTRAL
+  SEMESTRAL
+  ANUAL
+}
+
+enum TiposBensEnum {
+  IMOVEL
+  VEICULO
+  INVESTIMENTO
+  EQUIPAMENTO
+  JOIA
+  OUTRO
+}
+
+enum StatusContaEnum {
+  ATIVA
+  INATIVA
+  BLOQUEADA
+  FECHADA
+}
+
+// Módulo de Usuários
+model Usuarios {
+  uscodigo  String   @id
+  usnome    String
+  usemail   String   @unique
+  usfoto    String
+  ussenha   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  // Relações - Módulo Usuários
+  CodigosRecuperarSenha CodigosRecuperarSenha[]
+  Notificacoes          Notificacoes[]
+
+  // Relações - Módulo Finance
+  Contas                  Contas[]
+  CategoriasTransacoes    CategoriasTransacoes[]
+  SubcategoriasTransacoes SubcategoriasTransacoes[]
+  Transacoes              Transacoes[]
+  Transferencias          Transferencias[]
+  Bens                    Bens[]
+  AvaliacoesBens          AvaliacoesBens[]
+  MetasFinanceiras        MetasFinanceiras[]
+  AnexosTransacao         AnexosTransacao[]
+  Orcamentos              Orcamentos[]
+
+  // Relações - Módulo Garage
+  Veiculos       Veiculos[]
+  Abastecimentos Abastecimentos[]
+  Manutencoes    Manutencoes[]
+  Despesas       Despesas[]
+
+  // Relações - Módulo Checklists
+  Checklists Checklists[]
+
+  // Relações - Módulo Tarefas
+  Tarefas Tarefas[]
+
+  @@map("usuarios")
+}
+
+model CodigosRecuperarSenha {
+  crscodigo  String   @id
+  crstoken   String
+  crsusuario String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @default(now())
+
+  //Relações
+  usuario Usuarios @relation(fields: [crsusuario], references: [uscodigo])
+
+  @@map("codigosRecuperarSenha")
+}
+
+model Notificacoes {
+  nscodigo    String   @id
+  nstitulo    String
+  nsdescricao String
+  nsusuario   String
+  nslink      String?
+  nslido      Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now())
+
+  //Relações
+  usuario Usuarios @relation(fields: [nsusuario], references: [uscodigo])
+
+  @@map("notificacoes")
+}
+

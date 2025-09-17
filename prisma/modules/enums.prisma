@@ -1,0 +1,67 @@
+enum UrgenciasEnum {
+  URGENTE
+  NORMAL
+  MEDIA
+}
+
+enum TiposContasEnum {
+  CORRENTE
+  POUPANCA
+  SALARIO
+  INVESTIMENTO
+  CARTAO_CREDITO
+  CARTAO_DEBITO
+  DINHEIRO
+  OUTRO
+}
+
+enum CategoriasDespesasEnum {
+  ESTACIONAMENTO
+  MULTA
+  LAVAGEM
+  SEGURO
+  OUTRO
+}
+
+enum TiposTransacaoEnum {
+  RECEITA
+  DESPESA
+  TRANSFERENCIA
+  INVESTIMENTO
+  RETIRADA
+}
+
+enum StatusTransacaoEnum {
+  PENDENTE
+  CONFIRMADA
+  CANCELADA
+  ESTORNADA
+}
+
+enum FrequenciaRecorrenciaEnum {
+  UMA_VEZ
+  DIARIA
+  SEMANAL
+  QUINZENAL
+  MENSAL
+  BIMESTRAL
+  TRIMESTRAL
+  SEMESTRAL
+  ANUAL
+}
+
+enum TiposBensEnum {
+  IMOVEL
+  VEICULO
+  INVESTIMENTO
+  EQUIPAMENTO
+  JOIA
+  OUTRO
+}
+
+enum StatusContaEnum {
+  ATIVA
+  INATIVA
+  BLOQUEADA
+  FECHADA
+}

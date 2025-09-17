@@ -1,0 +1,34 @@
+model Tarefas {
+  tfcodigo      String        @id
+  tftitulo      String
+  tfdescricao   String
+  tffeito       Boolean       @default(false)
+  tfusuario     String
+  tfurgencia    UrgenciasEnum
+  tfdataentrega String
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @default(now())
+
+  //Relações
+  usuario    Usuarios     @relation(fields: [tfusuario], references: [uscodigo])
+  Subtarefas Subtarefas[]
+
+  @@map("tarefas")
+}
+
+model Subtarefas {
+  stcodigo      String        @id
+  sttarefa      String
+  sttitulo      String
+  stdescricao   String
+  sturgencia    UrgenciasEnum
+  stdateentrega String
+  stfeito       Boolean       @default(false)
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @default(now())
+
+  //Relações
+  tarefa Tarefas @relation(fields: [sttarefa], references: [tfcodigo])
+
+  @@map("subTarefas")
+}

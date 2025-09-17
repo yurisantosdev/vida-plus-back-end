@@ -1,0 +1,29 @@
+model Checklists {
+  ckcodigo     String   @id
+  cktitulo     String
+  ckusuario    String
+  ckfinalizado Boolean  @default(false)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @default(now())
+
+  //Relações
+  usuario         Usuarios          @relation(fields: [ckusuario], references: [uscodigo])
+  itensChecklists ItensChecklists[]
+
+  @@map("checklists")
+}
+
+model ItensChecklists {
+  iccodigo    String   @id
+  ictitulo    String
+  icdescricao String
+  iccheck     Boolean  @default(false)
+  icchecklist String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now())
+
+  //Relações
+  checklist Checklists @relation(fields: [icchecklist], references: [ckcodigo])
+
+  @@map("itensChecklists")
+}
